@@ -1,0 +1,14 @@
+select count(rental_id) as total_no_of_rentals from rental;
+select avg(Datediff(return_date,rental_rate))as average_duration_in_days from rental;
+select upper(first_name) as upper_first_name, upper(last_name) as upper_last_name from actor;
+select rental_id,month(rental_date)as rental_month from rental;
+select c.customer_id,count(r.rental_id) as rental_count from customer c left join rental r on c.customer_id=r.customer_id group by c.customer_id;
+select s.store_id,sum(p.amount) as total_revenue from store s join staff st on s.store_id=st.store_id join payment p on st.staff_id=p.staff_id group by s.store_id;
+select f.title as movie_title,c.first_name,c.last_name from film f join inventory i on f.film_id join rental r on i.inventory_id=r.inventory_id join customer c on r.customer_id;
+select a.first_name ,a.last_name from actor a join film_actor fa on a.actor_id= fa.actor_id join  film f on fa.film_id=f.film_id where f.title ='Gone with the Wind';
+select fc.category_id,count(r.rental_id) as rental_count from rental r join inventory i on  r.inventory_id=i.inventory_id join film f on i.film_id=f.film_id join film_category fc on f.film_id =fc.film_id group by fc.category_id;
+select i.name as language, avg(f.rental_rate) as avg_rental_rate  from film f right join (select language_id,avg(f.rental_rate) as avg_rate from film group by language_id) as avg_table on f.language_id =avg_table.language_id join language I on f.language_id = l.language_id group by i.name;
+select c.first_name,c.last_name,sum(p.amount) as total_amount_spent from customer c join payment p on c.customer_id =p.customer_id join rental r on c.customer_id=r.customer_id group by c.customer_id;
+select c.first_name,c.last_name,f.title as rented_movie_title from customer c join city ci on a.city_id =ci.city_id join rental r on c.customer_id=r.customer_id join inventory i on r.inventory_id=i.inventory_id join film f on i.film_id=f.film_id where ci.city="London" order by c.first_name,c.last_name,f.title;
+select f.title as movie_title,count(*) as rental_count from film f join inventory i on f.film_id=i.film_id join rental r on i.inventory_id=r.inventory_id group by f.title order by rental_count desc limit 5;
+select c.customer_id,c.first_name,c.last_name from customer c join rental r on c.customer_id=r.customer_id join inventory i on r.inventory_id=i.inventory_id join store s on i.store_id=s.store_id where s.store_id IN (1,2) group by c.customer_id,c.first_name,c.last_name having count(distinct (store_id =2));
